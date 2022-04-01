@@ -7,9 +7,9 @@ import requests
 
 def index_txt(links):
     f_index = open("index.txt", "w")
-    pattern = "%d. %s\n"
+    pattern = "%d %s\n"
     for i in range(len(links)):
-        f_index.write(pattern % (i, host + links[i]))
+        f_index.write(pattern % (i, links[i]))
     f_index.close()
 
 
