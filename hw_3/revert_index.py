@@ -44,7 +44,7 @@ def get_lemma(word):
 
 
 def get_lemmatizator():
-    f = open("/Users/aegorova/Documents/information_retrieval/hw_2/lemmas.txt", "r")
+    f = open("../hw_2/lemmas.txt", "r")
     lines = f.readlines()
     map = dict()
     for line in lines:
@@ -130,13 +130,29 @@ def read_index():
 
 def boolean_search(query, index):
     query_words = re.split('\s+', query)
-    page_crossing = set()
+    operation = query_words[1]
+    query_words.remove(operation)
+    page_or = set()
     token_query = set(map(lambda x: get_lemma(x), query_words))
-    for word in token_query:
-        page_crossing = page_crossing | index[word]
-    print(page_crossing)
+    list_of_set = []
+    if operation == 'OR':
+        for word in token_query:
+            f = index[word]
+            print(f"Result for {word}: {f}")
+            page_or = page_or | f
+    if operation == 'AND':
+        for word in token_query:
+            f = index[word]
+            print(f"Result for {word}: {f}")
+            list_of_set.append(f)
+        page_or = set.intersection(*list_of_set)
+
+    print(f"Result : {page_or}")
 
 
 if __name__ == '__main__':
-    create_index()
-    boolean_search("изумрудные", read_index())
+    # create_index()
+    print(f"Please type two words with 'OR' or 'AND' operator. For example: изумрудный OR чайный")
+    search = input()
+    print(f"Searching query: {search}")
+    boolean_search(search, read_index())
